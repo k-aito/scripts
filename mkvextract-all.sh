@@ -98,7 +98,6 @@ while IFS= read -r line; do
     codec_id=$(echo "$line" | cut -d ':' -f 2- | sed -e 's/^\ \+//g' -e 's/\ \+$//g')
   fi
 done < <(mkvinfo "$INPUT_FILE" --ui-language en_US)
-exit 1
 
 # Extract information using mkvinfo and extract attachments
 attachemnt_id=0

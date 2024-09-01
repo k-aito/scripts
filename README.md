@@ -24,6 +24,13 @@ Finally, we read each from the `./original_tree` and try to find the md5sum that
 If we find it, we use the wanted operation on the file.
 If not, the script exits with an error message.
 
-# mkxextract-all.sh
+# mkvextract-all.sh
+
+## Methodology
 
 It extracts all the tracks and attachments. It is possible to define in WHITELIST_CODEC_ID which types of tracks we want to extract.
+
+That is achieved by parsing the result of `mkvinfo`. The CODEC_ID is manually defined in a switch to avoid any issues.
+If the CODEC_ID is not recognized, it is possible to add it to the switch with the proper file extension name.
+
+There are also commented lines that can be used if `mkvtoolnix` is installed as a flatpak.

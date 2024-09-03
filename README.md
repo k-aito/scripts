@@ -1,8 +1,10 @@
-# save-original-tree.sh
+# Scripts
 
-## Methodology for save
+## save-original-tree.sh
 
-The directory tree  must be saved with `save-original-tree.sh` script.
+### Methodology for save
+
+The directory tree  must be saved with the `save-original-tree.sh` script.
 
 It generates a `./original_tree` file
 
@@ -11,11 +13,11 @@ MAIN DIRECTORY NAME
 md5sum *./filepath
 ```
 
-# restore-original-tree.sh
+## restore-original-tree.sh
 
-## Methodology for restore
+### Methodology for restore
 
-You can define which operation you use for the restore. By default, the safest is hardlink.
+You can define which operation you use for the restore. By default, the safest is a hard link.
 The available operations are `move`, `hardlink` and `symlink`.
 
 We generate `./actual_tree` that contains md5sum for the actual directory.
@@ -24,9 +26,9 @@ Finally, we read each from the `./original_tree` and try to find the md5sum that
 If we find it, we use the wanted operation on the file.
 If not, the script exits with an error message.
 
-# mkvextract-all.sh
+## mkvextract-all.sh
 
-## Methodology
+### Methodology
 
 It extracts all the tracks and attachments. It is possible to define in WHITELIST_CODEC_ID which types of tracks we want to extract.
 
@@ -34,3 +36,11 @@ That is achieved by parsing the result of `mkvinfo`. The CODEC_ID is manually de
 If the CODEC_ID is not recognized, it is possible to add it to the switch with the proper file extension name.
 
 There are also commented lines that can be used if `mkvtoolnix` is installed as a flatpak.
+
+## nsupdate.sh
+
+### Methodology
+
+The script updates only if the previous IP and new IP are different on services like nsupdate.
+It is useful if the router cannot do it properly by itself.
+A log file is kept for debugging, but the lines may be commented.

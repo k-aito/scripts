@@ -13,6 +13,7 @@ declare -r WHITELIST_CODEC_ID=(
   "A_FLAC"
   "A_MPEG/L3"
   "A_VORBIS"
+  "A_AAC"
 
   "S_TEXT/UTF8"
   "S_TEXT/ASS"
@@ -63,6 +64,9 @@ while IFS= read -r line; do
         "A_VORBIS")
           ext="ogg"
           ;;
+        "A_AAC")
+          ext="aac"
+          ;;
         "S_TEXT/UTF8")
           ext="srt"
           ;;
@@ -79,7 +83,11 @@ while IFS= read -r line; do
       echo "  Track name: $track_name"
       if [[ "${WHITELIST_CODEC_ID[*]}" =~ "$codec_id" ]] ; then
         echo "$codec_id match the (${WHITELIST_CODEC_ID[*]})"
-        mkvextract tracks "$INPUT_FILE" $track_id:"$OUTPUT_DIR_TRACKS/$(basename "$INPUT_FILE")_${track_id}_${track_name}_${track_language}.${ext}" --ui-language en_US
+        # Get the delay (in that case we start at 1)
+        delay_str="$(mkvinfo -s "$INPUT_FILE" --ui-language en_US | grep -i "frame, track $((track_id+1))" | head -n1 | cut -d ',' -f3 | cut -d ' ' -f3)"
+        # Convert the delay in ms
+        delay_ms="$(echo "$delay_str" | awk -F: '{print ($1*3600+$2*60+$3)*1000}')"
+        mkvextract tracks "$INPUT_FILE" $track_id:"$OUTPUT_DIR_TRACKS/$(basename "$INPUT_FILE")_${track_id}_${track_name}_${track_language}_delay ${delay_ms}ms.${ext}" --ui-language en_US
       else
         echo "$codec_id doesn't match the (${WHITELIST_CODEC_ID[*]})"
       fi
